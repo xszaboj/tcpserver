@@ -51,7 +51,7 @@ namespace TCPServer
             private void doChat()
             {
                 int requestCount = 0;
-                byte[] bytesFrom = new byte[10025];
+                byte[] bytesFrom = new byte[65537];
                 string dataFromClient = null;
                 Byte[] sendBytes = null;
                 string serverResponse = null;
@@ -62,15 +62,21 @@ namespace TCPServer
                 {
                     try
                     {
-                        if (clientSocket.Client.IsConnected())
+                        if (clientSocket.Connected && clientSocket.Client.IsConnected())
                         {
                             requestCount = requestCount + 1;
                             NetworkStream networkStream = clientSocket.GetStream();
-                            networkStream.Read(bytesFrom, 0, (int) clientSocket.ReceiveBufferSize);
-                            dataFromClient = System.Text.Encoding.ASCII.GetString(bytesFrom);
-                            dataFromClient = dataFromClient.Substring(0, dataFromClient.IndexOf("$"));
-                            Console.WriteLine(" >> " + "From client-" + clNo + dataFromClient);
-
+                            if (networkStream.DataAvailable)
+                            {
+                                int bytesRead = networkStream.Read(bytesFrom, 0, (int) clientSocket.ReceiveBufferSize);
+                                dataFromClient = System.Text.Encoding.ASCII.GetString(bytesFrom, 0, bytesRead);
+                                var data = dataFromClient.Split('$');
+                                for (int index = 0; index < data.Length-1; index++)
+                                {
+                                    var s = data[index];
+                                    Console.WriteLine(" >> " + "From client-{0}-{1}", clNo, s);
+                                }
+                            }
                             /*rCount = Convert.ToString(requestCount);
                             serverResponse = "Server to clinet(" + clNo + ") " + rCount;
                             sendBytes = Encoding.ASCII.GetBytes(serverResponse);

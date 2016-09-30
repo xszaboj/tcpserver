@@ -16,7 +16,7 @@ namespace TCPClient
         {
             
             Console.WriteLine("Connecting.....");
-            clientSocket.Connect("127.0.0.1", 8889);
+            clientSocket.Connect("192.168.0.5", 8889);
             Console.WriteLine("Connected");
             NetworkStream serverStream = clientSocket.GetStream();
             while (on)
