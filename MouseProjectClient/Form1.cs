@@ -26,9 +26,7 @@ namespace MouseProjectClient
 
         private void button1_Click(object sender, EventArgs e)
         {
-            int x = Int32.Parse(this.xcord.Text);
-            int y = Int32.Parse(this.ycord.Text);
-            _mouseManager.MoveCursor(x, y);
+            _mouseManager.Scroll(1);
         }
 
         private void timer1_Tick(object sender, EventArgs e)

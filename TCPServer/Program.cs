@@ -6,6 +6,8 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using MouseProject;
+using TouchApp.MySpace;
 
 namespace TCPServer
 {
@@ -39,10 +41,13 @@ namespace TCPServer
         //Class to handle each client request separatly
         public class handleClinet
         {
+            private MouseManager _manager;
             TcpClient clientSocket;
             string clNo;
             public void startClient(TcpClient inClientSocket, string clineNo)
             {
+
+                _manager = new MouseManager();
                 this.clientSocket = inClientSocket;
                 this.clNo = clineNo;
                 Thread ctThread = new Thread(doChat);
@@ -74,6 +79,31 @@ namespace TCPServer
                                 for (int index = 0; index < data.Length-1; index++)
                                 {
                                     var s = data[index];
+                                    string[] coords = s.Split('|');
+                                    int x = Int32.Parse(coords[0]);
+                                    int y = Int32.Parse(coords[1]);
+                                    TouchEnum action = (TouchEnum)Enum.Parse(typeof(TouchEnum), coords[2]);
+                                    var originalX = _manager.GetX();
+                                    var originalY = _manager.GetY();
+                                    switch (action)
+                                    {
+                                            case TouchEnum.Single:
+                                            _manager.MoveCursor(originalX + x, originalY + y);
+                                            break;
+                                            case TouchEnum.Multi:
+                                            _manager.Scroll(y);
+                                            break;
+                                            case TouchEnum.SingleClick:
+                                            _manager.Click();
+                                            break;
+                                            case TouchEnum.RightClick:
+                                            _manager.RightClick();
+                                            break;
+                                            case TouchEnum.DoubleClick:
+                                            _manager.DoubleClick();
+                                            break;
+                                    }
+                                    
                                     Console.WriteLine(" >> " + "From client-{0}-{1}", clNo, s);
                                 }
                             }
