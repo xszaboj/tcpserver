@@ -42,14 +42,26 @@ namespace TCPClient
                 clientSocket.Close();
                 on = false;
             }
-            byte[] outStream = Encoding.ASCII.GetBytes(str + "$");
+            byte[] outStream = GoData();
             serverStream.Write(outStream, 0, outStream.Length);
             serverStream.Flush();
-
             /*byte[] inStream = new byte[10025];
             serverStream.Read(inStream, 0, (int)clientSocket.ReceiveBufferSize);
             string returndata = Encoding.ASCII.GetString(inStream);
             Console.WriteLine("Data from Server : " + returndata);*/
+        }
+
+
+        static byte[] GoData()
+        {
+
+       
+
+            List<Byte> res= new List<byte>();
+            for(int i = 0; i < 1024 * 1024; i++)
+                res.Add(255);
+
+           return res.ToArray();
         }
     }
 }

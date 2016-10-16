@@ -62,8 +62,9 @@ namespace TCPServer
                 string serverResponse = null;
                 string rCount = null;
                 requestCount = 0;
+                bool running = true;
 
-                while ((true))
+                while (running)
                 {
                     try
                     {
@@ -76,34 +77,34 @@ namespace TCPServer
                                 int bytesRead = networkStream.Read(bytesFrom, 0, (int) clientSocket.ReceiveBufferSize);
                                 dataFromClient = System.Text.Encoding.ASCII.GetString(bytesFrom, 0, bytesRead);
                                 var data = dataFromClient.Split('$');
-                                for (int index = 0; index < data.Length-1; index++)
+                                for (int index = 0; index < data.Length - 1; index++)
                                 {
                                     var s = data[index];
                                     string[] coords = s.Split('|');
                                     int x = Int32.Parse(coords[0]);
                                     int y = Int32.Parse(coords[1]);
-                                    TouchEnum action = (TouchEnum)Enum.Parse(typeof(TouchEnum), coords[2]);
+                                    TouchEnum action = (TouchEnum) Enum.Parse(typeof(TouchEnum), coords[2]);
                                     var originalX = _manager.GetX();
                                     var originalY = _manager.GetY();
                                     switch (action)
                                     {
-                                            case TouchEnum.Single:
+                                        case TouchEnum.Single:
                                             _manager.MoveCursor(originalX + x, originalY + y);
                                             break;
-                                            case TouchEnum.Multi:
+                                        case TouchEnum.Multi:
                                             _manager.Scroll(y);
                                             break;
-                                            case TouchEnum.SingleClick:
+                                        case TouchEnum.SingleClick:
                                             _manager.Click();
                                             break;
-                                            case TouchEnum.RightClick:
+                                        case TouchEnum.RightClick:
                                             _manager.RightClick();
                                             break;
-                                            case TouchEnum.DoubleClick:
+                                        case TouchEnum.DoubleClick:
                                             _manager.DoubleClick();
                                             break;
                                     }
-                                    
+
                                     Console.WriteLine(" >> " + "From client-{0}-{1}", clNo, s);
                                 }
                             }
@@ -113,6 +114,12 @@ namespace TCPServer
                             networkStream.Write(sendBytes, 0, sendBytes.Length);
                             networkStream.Flush();
                             Console.WriteLine(" >> " + serverResponse);*/
+                        }
+                        else
+                        {
+                            //client disconected
+                            Console.WriteLine(">> Client number {0} disconected", clNo);
+                            running = false;
                         }
                     }
                     catch (Exception ex)
