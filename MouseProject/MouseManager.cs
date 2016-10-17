@@ -56,5 +56,15 @@ namespace MouseProject
                 Win32.Scroll(y);
             
         }
+
+        public void ClickDown()
+        {
+            Win32.MouseEvent(Win32.MouseEventFlags.LeftDown);
+        }
+
+        public void ClickUp()
+        {
+            Win32.MouseEvent(Win32.MouseEventFlags.LeftUp);
+        }
     }
 }

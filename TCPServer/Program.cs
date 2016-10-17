@@ -97,6 +97,12 @@ namespace TCPServer
                                         case TouchEnum.SingleClick:
                                             _manager.Click();
                                             break;
+                                        case TouchEnum.SingleClickDown:
+                                            _manager.ClickDown();
+                                            break;
+                                        case TouchEnum.SingleClickUp:
+                                            _manager.ClickUp();
+                                            break;
                                         case TouchEnum.RightClick:
                                             _manager.RightClick();
                                             break;
