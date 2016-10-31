@@ -6,15 +6,16 @@ using System.Threading.Tasks;
 
 namespace MouseProject
 {
-    public class MouseManager
+    public class MouseManager : IMouseManager
     {
         public void MoveCursor(int x, int y)
         {
-            Win32.POINT p = new Win32.POINT();
-            p.x = x;
-            p.y = y;
+            Win32.POINT p = new Win32.POINT
+            {
+                x = x,
+                y = y
+            };
 
-            //Win32.ClientToScreen(this.Handle, ref p);
             Win32.SetCursorPos(p.x, p.y);
         }
 
@@ -52,9 +53,7 @@ namespace MouseProject
 
         public void Scroll(int y)
         {
-            
-                Win32.Scroll(y);
-            
+            Win32.Scroll(y);
         }
 
         public void ClickDown()
