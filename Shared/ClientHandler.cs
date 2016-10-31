@@ -7,7 +7,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using MouseProject;
 using TCPServer;
-using TouchApp.MySpace;
 
 namespace Shared
 {
@@ -42,6 +41,7 @@ namespace Shared
             {
                 try
                 {
+                    //TODO separate into testable class
                     if (clientSocket.Connected && clientSocket.Client.IsConnected())
                     {
                         requestCount = requestCount + 1;
