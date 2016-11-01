@@ -64,6 +64,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SocketExtensions.cs" />
     <Compile Include="TcpServer.cs" />
+    <Compile Include="TCPWrappers\INetworkStream.cs" />
+    <Compile Include="TCPWrappers\ITcpClient.cs" />
+    <Compile Include="TCPWrappers\MyNetworkStream.cs" />
+    <Compile Include="TCPWrappers\MyTcpClient.cs" />
     <Compile Include="TouchEnum.cs" />
   </ItemGroup>
   <ItemGroup>

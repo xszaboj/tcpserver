@@ -2,31 +2,26 @@
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
+using Shared.TCPWrappers;
 
 namespace Shared
 {
     public class TcpServer
     {
         TcpListener _serverSocket;
-        TcpClient _clientSocket;
+        ITcpClient _clientSocket;
 
         public void Start()
         {
             Task t = new Task(() =>
             {
                 _serverSocket = new TcpListener(8889);
-                _clientSocket = default(TcpClient);
-                int counter = 0;
-
                 _serverSocket.Start();
-
-                counter = 0;
                 while (true)
                 {
-                    counter += 1;
-                    _clientSocket = _serverSocket.AcceptTcpClient();
+                    _clientSocket = new MyTcpClient(_serverSocket.AcceptTcpClient());
                     ClientHandler client = new ClientHandler();
-                    client.StartClient(_clientSocket, Convert.ToString(counter));
+                    client.StartClient(_clientSocket);
                 }
             });
             t.Start();

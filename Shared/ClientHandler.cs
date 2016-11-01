@@ -10,6 +10,7 @@ using Shared.Commands;
 using Shared.Commands.Data;
 using Shared.Extensions;
 using Shared.Factories;
+using Shared.TCPWrappers;
 using TCPServer;
 
 namespace Shared
@@ -20,11 +21,11 @@ namespace Shared
         private MouseManager _manager;
         private CommandFactory _commandFactory;
         private CommandDataFactory _commandDataFactory;
-        private TcpClient _clientSocket;
+        private ITcpClient _clientSocket;
         private  static readonly byte[] BytesFrom = new byte[65537];
         private const char SplitCharacter = '$';
 
-        public void StartClient(TcpClient inClientSocket, string clineNo)
+        public void StartClient(ITcpClient inClientSocket)
         {
 
             _manager = new MouseManager();
@@ -53,7 +54,7 @@ namespace Shared
 
         private void ProcessIncomingData()
         {
-            NetworkStream networkStream = _clientSocket.GetStream();
+            INetworkStream networkStream = _clientSocket.GetStream();
             if (networkStream.DataAvailable)
             {
                 string[] data = ConvertBytesToString(networkStream);
@@ -81,7 +82,7 @@ namespace Shared
             return new ReceivedData(parsedData.X+originalX, parsedData.Y+originalY, parsedData.Action);
         }
 
-        private string[] ConvertBytesToString(NetworkStream networkStream)
+        private string[] ConvertBytesToString(INetworkStream networkStream)
         {
             int bytesRead = networkStream.Read(BytesFrom, 0, _clientSocket.ReceiveBufferSize);
             string dataFromClient = Encoding.ASCII.GetString(BytesFrom, 0, bytesRead);
