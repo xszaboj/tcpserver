@@ -47,6 +47,7 @@
     <Compile Include="Commands\Data\Empty.cs" />
     <Compile Include="Commands\Data\ICommandData.cs" />
     <Compile Include="Commands\Data\MoveData.cs" />
+    <Compile Include="Commands\Data\ParsedData.cs" />
     <Compile Include="Commands\Data\ReceivedData.cs" />
     <Compile Include="Commands\Data\ScrollData.cs" />
     <Compile Include="Commands\DoubleClick.cs" />
@@ -57,6 +58,7 @@
     <Compile Include="Commands\SingleClick.cs" />
     <Compile Include="Commands\SingleClickDown.cs" />
     <Compile Include="Commands\SingleClickUp.cs" />
+    <Compile Include="Extensions\Extensions.cs" />
     <Compile Include="Factories\CommandDataFactory.cs" />
     <Compile Include="Factories\CommandFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

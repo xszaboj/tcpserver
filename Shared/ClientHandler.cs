@@ -6,6 +6,10 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using MouseProject;
+using Shared.Commands;
+using Shared.Commands.Data;
+using Shared.Extensions;
+using Shared.Factories;
 using TCPServer;
 
 namespace Shared
@@ -14,90 +18,74 @@ namespace Shared
     {
     
         private MouseManager _manager;
-        TcpClient clientSocket;
-        string clNo;
-        public void startClient(TcpClient inClientSocket, string clineNo)
+        private CommandFactory _commandFactory;
+        private CommandDataFactory _commandDataFactory;
+        private TcpClient _clientSocket;
+        private  static readonly byte[] BytesFrom = new byte[65537];
+        private const char SplitCharacter = '$';
+
+        public void StartClient(TcpClient inClientSocket, string clineNo)
         {
 
             _manager = new MouseManager();
-            this.clientSocket = inClientSocket;
-            this.clNo = clineNo;
-            Thread ctThread = new Thread(doChat);
+            _commandFactory = new CommandFactory();
+            _commandDataFactory = new CommandDataFactory();
+            _clientSocket = inClientSocket;
+            Thread ctThread = new Thread(DoChat);
             ctThread.Start();
         }
 
-        private void doChat()
+        private void DoChat()
         {
-            int requestCount = 0;
-            byte[] bytesFrom = new byte[65537];
-            string dataFromClient = null;
-            Byte[] sendBytes = null;
-            string serverResponse = null;
-            string rCount = null;
-            requestCount = 0;
             bool running = true;
-
             while (running)
             {
-                try
+                if (_clientSocket.IsConnected())
                 {
-                    //TODO separate into testable class
-                    if (clientSocket.Connected && clientSocket.Client.IsConnected())
-                    {
-                        requestCount = requestCount + 1;
-                        NetworkStream networkStream = clientSocket.GetStream();
-                        if (networkStream.DataAvailable)
-                        {
-                            int bytesRead = networkStream.Read(bytesFrom, 0, (int)clientSocket.ReceiveBufferSize);
-                            dataFromClient = System.Text.Encoding.ASCII.GetString(bytesFrom, 0, bytesRead);
-                            var data = dataFromClient.Split('$');
-                            for (int index = 0; index < data.Length - 1; index++)
-                            {
-                                var s = data[index];
-                                string[] coords = s.Split('|');
-                                int x = Int32.Parse(coords[0]);
-                                int y = Int32.Parse(coords[1]);
-                                TouchEnum action = (TouchEnum)Enum.Parse(typeof(TouchEnum), coords[2]);
-                                var originalX = _manager.GetX();
-                                var originalY = _manager.GetY();
-                                switch (action)
-                                {
-                                    case TouchEnum.Move:
-                                        _manager.MoveCursor(originalX + x, originalY + y);
-                                        break;
-                                    case TouchEnum.Scroll:
-                                        _manager.Scroll(y);
-                                        break;
-                                    case TouchEnum.SingleClick:
-                                        _manager.Click();
-                                        break;
-                                    case TouchEnum.SingleClickDown:
-                                        _manager.ClickDown();
-                                        break;
-                                    case TouchEnum.SingleClickUp:
-                                        _manager.ClickUp();
-                                        break;
-                                    case TouchEnum.RightClick:
-                                        _manager.RightClick();
-                                        break;
-                                    case TouchEnum.DoubleClick:
-                                        _manager.DoubleClick();
-                                        break;
-                                }
-                                //TODO log info
-                            }
-                        }
-                    }
-                    else
-                    {
-                        running = false;
-                    }
+                    ProcessIncomingData();
                 }
-                catch (Exception ex)
+                else
                 {
-                    //TODO log exception
+                    running = false;
                 }
             }
+        }
+
+        private void ProcessIncomingData()
+        {
+            NetworkStream networkStream = _clientSocket.GetStream();
+            if (networkStream.DataAvailable)
+            {
+                string[] data = ConvertBytesToString(networkStream);
+                for (int index = 0; index < data.Length - 1; index++)
+                {
+                    ExecuteCommand(data[index]);
+                }
+            }
+        }
+
+        private void ExecuteCommand(string data)
+        {
+            ReceivedData recdata = GetReceivedData(data);
+            ICommandData commandData =
+                _commandDataFactory.GetData(recdata);
+            ICommand command = _commandFactory.GetCommand(recdata.DataType, _manager, commandData);
+            command.Execute();
+        }
+
+        private ReceivedData GetReceivedData(string data)
+        {
+            ParsedData parsedData = ParsedData.ParseData(data);
+            var originalX = _manager.GetX();
+            var originalY = _manager.GetY();
+            return new ReceivedData(parsedData.X+originalX, parsedData.Y+originalY, parsedData.Action);
+        }
+
+        private string[] ConvertBytesToString(NetworkStream networkStream)
+        {
+            int bytesRead = networkStream.Read(BytesFrom, 0, _clientSocket.ReceiveBufferSize);
+            string dataFromClient = Encoding.ASCII.GetString(BytesFrom, 0, bytesRead);
+            return dataFromClient.Split(SplitCharacter);
         }
     }
 }

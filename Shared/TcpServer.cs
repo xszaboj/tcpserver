@@ -26,7 +26,7 @@ namespace Shared
                     counter += 1;
                     _clientSocket = _serverSocket.AcceptTcpClient();
                     ClientHandler client = new ClientHandler();
-                    client.startClient(_clientSocket, Convert.ToString(counter));
+                    client.StartClient(_clientSocket, Convert.ToString(counter));
                 }
             });
             t.Start();
