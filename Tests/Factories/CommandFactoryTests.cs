@@ -13,6 +13,7 @@ namespace Tests.Factories
     [TestFixture]
     public class CommandFactoryTests
     {
+        [TestCase(TouchEnum.Move, typeof(Move))]
         [TestCase(TouchEnum.SingleClick, typeof(SingleClick))]
         [TestCase(TouchEnum.SingleClickDown, typeof(SingleClickDown))]
         [TestCase(TouchEnum.SingleClickUp, typeof(SingleClickUp))]

@@ -2,6 +2,8 @@
 {
     public interface IMouseManager
     {
+        void MoveCursor(int x, int y);
+
         int GetX();
 
         int GetY();

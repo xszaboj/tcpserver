@@ -74,7 +74,7 @@ namespace Tests.Commands
 
         private Empty GetEmpty()
         {
-            return new Empty(new ReceivedData(0,0,TouchEnum.Single));
+            return new Empty(new ReceivedData(0,0,TouchEnum.SingleClick));
         }
     }
 }

@@ -15,7 +15,8 @@ namespace Shared.Factories
             {TouchEnum.SingleClickUp, typeof(SingleClickUp)},
             {TouchEnum.RightClick, typeof(RightClick)},
             {TouchEnum.DoubleClick, typeof(DoubleClick)},
-            {TouchEnum.Scroll, typeof(Scroll)}
+            {TouchEnum.Scroll, typeof(Scroll)},
+            {TouchEnum.Move, typeof(Move)}
         }; 
 
         public ICommand GetCommand(TouchEnum type, IMouseManager manager, ICommandData data)

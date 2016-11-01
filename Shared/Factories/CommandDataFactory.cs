@@ -11,12 +11,13 @@ namespace Shared.Factories
     {
         private readonly IDictionary<TouchEnum, Type> _dictionary = new Dictionary<TouchEnum, Type>()
         {
-            {TouchEnum.Single, typeof(Empty)},
+            {TouchEnum.SingleClick, typeof(Empty)},
             {TouchEnum.SingleClickDown, typeof(Empty)},
             {TouchEnum.SingleClickUp, typeof(Empty)},
             {TouchEnum.RightClick, typeof(Empty)},
             {TouchEnum.DoubleClick, typeof(Empty)},
-            {TouchEnum.Scroll, typeof(ScrollData)}
+            {TouchEnum.Scroll, typeof(ScrollData)},
+            {TouchEnum.Move, typeof(MoveData)},
         }; 
 
         public ICommandData GetData(ReceivedData data)

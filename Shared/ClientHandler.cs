@@ -62,7 +62,7 @@ namespace Shared
                                 var originalY = _manager.GetY();
                                 switch (action)
                                 {
-                                    case TouchEnum.Single:
+                                    case TouchEnum.Move:
                                         _manager.MoveCursor(originalX + x, originalY + y);
                                         break;
                                     case TouchEnum.Scroll:

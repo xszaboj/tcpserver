@@ -46,10 +46,12 @@
     <Compile Include="Commands\Data\BaseCommandData.cs" />
     <Compile Include="Commands\Data\Empty.cs" />
     <Compile Include="Commands\Data\ICommandData.cs" />
+    <Compile Include="Commands\Data\MoveData.cs" />
     <Compile Include="Commands\Data\ReceivedData.cs" />
     <Compile Include="Commands\Data\ScrollData.cs" />
     <Compile Include="Commands\DoubleClick.cs" />
     <Compile Include="Commands\ICommand.cs" />
+    <Compile Include="Commands\Move.cs" />
     <Compile Include="Commands\RightClick.cs" />
     <Compile Include="Commands\Scroll.cs" />
     <Compile Include="Commands\SingleClick.cs" />
