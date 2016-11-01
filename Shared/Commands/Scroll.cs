@@ -13,14 +13,13 @@ namespace Shared.Commands
         private readonly ScrollData _data;
 
         public Scroll(IMouseManager manager, ScrollData data)
-            : base(manager)
+            : base(manager, data)
         {
             _data = data;
         }
 
         public override void Execute()
         {
-
             Manager.Scroll(_data.ScrollValue);
         }
     }

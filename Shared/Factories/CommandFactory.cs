@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using MouseProject;
 using Shared.Commands;
+using Shared.Commands.Data;
 
 namespace Shared.Factories
 {
@@ -9,7 +10,7 @@ namespace Shared.Factories
     {
         private readonly IDictionary<TouchEnum, Type> _dictionary = new Dictionary<TouchEnum, Type>()
         {
-            {TouchEnum.Single, typeof(SingleClick)},
+            {TouchEnum.SingleClick, typeof(SingleClick)},
             {TouchEnum.SingleClickDown, typeof(SingleClickDown)},
             {TouchEnum.SingleClickUp, typeof(SingleClickUp)},
             {TouchEnum.RightClick, typeof(RightClick)},
@@ -17,12 +18,12 @@ namespace Shared.Factories
             {TouchEnum.Scroll, typeof(Scroll)}
         }; 
 
-        public ICommand GetCommand(TouchEnum type, IMouseManager manager)
+        public ICommand GetCommand(TouchEnum type, IMouseManager manager, ICommandData data)
         {
             Type commandType;
             if (_dictionary.TryGetValue(type, out commandType))
             {
-                return (ICommand)Activator.CreateInstance(commandType, manager);
+                return (ICommand)Activator.CreateInstance(commandType, manager, data);
             }
             throw new ArgumentException("Command not found");
         }

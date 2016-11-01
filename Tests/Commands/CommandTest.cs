@@ -1,6 +1,7 @@
 ﻿using Moq;
 using MouseProject;
 using NUnit.Framework;
+using Shared;
 using Shared.Commands;
 using Shared.Commands.Data;
 
@@ -21,7 +22,7 @@ namespace Tests.Commands
         public void SingleClickCommand()
         {
             _mouseMock.Setup(s=> s.Click()).Verifiable();
-            ICommand cmd = new SingleClick(_mouseMock.Object);
+            ICommand cmd = new SingleClick(_mouseMock.Object, GetEmpty());
             cmd.Execute();
             _mouseMock.Verify(a=> a.Click(), Times.Once);
         }
@@ -30,7 +31,7 @@ namespace Tests.Commands
         public void SingleClickDownCommand()
         {
             _mouseMock.Setup(s => s.ClickDown()).Verifiable();
-            ICommand cmd = new SingleClickDown(_mouseMock.Object);
+            ICommand cmd = new SingleClickDown(_mouseMock.Object, GetEmpty());
             cmd.Execute();
             _mouseMock.Verify(a => a.ClickDown(), Times.Once);
         }
@@ -39,7 +40,7 @@ namespace Tests.Commands
         public void SingleClickUpCommand()
         {
             _mouseMock.Setup(s => s.ClickUp()).Verifiable();
-            ICommand cmd = new SingleClickUp(_mouseMock.Object);
+            ICommand cmd = new SingleClickUp(_mouseMock.Object, GetEmpty());
             cmd.Execute();
             _mouseMock.Verify(a => a.ClickUp(), Times.Once);
         }
@@ -48,7 +49,7 @@ namespace Tests.Commands
         public void RightClickCommand()
         {
             _mouseMock.Setup(s => s.RightClick()).Verifiable();
-            ICommand cmd = new RightClick(_mouseMock.Object);
+            ICommand cmd = new RightClick(_mouseMock.Object, GetEmpty());
             cmd.Execute();
             _mouseMock.Verify(a => a.RightClick(), Times.Once);
         }
@@ -57,7 +58,7 @@ namespace Tests.Commands
         public void DoubleClickCommand()
         {
             _mouseMock.Setup(s => s.DoubleClick()).Verifiable();
-            ICommand cmd = new DoubleClick(_mouseMock.Object);
+            ICommand cmd = new DoubleClick(_mouseMock.Object, GetEmpty());
             cmd.Execute();
             _mouseMock.Verify(a => a.DoubleClick(), Times.Once);
         }
@@ -65,10 +66,15 @@ namespace Tests.Commands
         [Test]
         public void ScrollCommand()
         {
-            _mouseMock.Setup(s => s.Scroll(It.IsAny<int>())).Verifiable();
-            ICommand cmd = new Scroll(_mouseMock.Object, new ScrollData(5));
+            _mouseMock.Setup(s => s.Scroll(It.Is<int>(i=> i == 5))).Verifiable();
+            ICommand cmd = new Scroll(_mouseMock.Object, new ScrollData(new ReceivedData(0,5,TouchEnum.Scroll)));
             cmd.Execute();
-            _mouseMock.Verify(a => a.Scroll(It.IsAny<int>()), Times.Once);
+            _mouseMock.Verify(a => a.Scroll(It.Is<int>(i => i == 5)), Times.Once);
+        }
+
+        private Empty GetEmpty()
+        {
+            return new Empty(new ReceivedData(0,0,TouchEnum.Single));
         }
     }
 }

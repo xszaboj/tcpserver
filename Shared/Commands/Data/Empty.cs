@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace Shared.Commands.Data
 {
-    public class Empty
+    public class Empty : BaseCommandData
     {
+        public Empty(ReceivedData data) : base(data)
+        {
+        }
     }
 }

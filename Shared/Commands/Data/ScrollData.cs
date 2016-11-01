@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 
 namespace Shared.Commands.Data
 {
-    public class ScrollData
+    public class ScrollData : BaseCommandData
     {
         private readonly int _scrollValue;
 
-        public ScrollData(int scrollValue)
+        public ScrollData(ReceivedData data)
+            : base(data)
         {
-            this._scrollValue = scrollValue;
+            _scrollValue = ReceivedData.Y;
         }
 
         public int ScrollValue

@@ -13,7 +13,7 @@ namespace Tests.Factories
     [TestFixture]
     public class CommandFactoryTests
     {
-        [TestCase(TouchEnum.Single, typeof(SingleClick))]
+        [TestCase(TouchEnum.SingleClick, typeof(SingleClick))]
         [TestCase(TouchEnum.SingleClickDown, typeof(SingleClickDown))]
         [TestCase(TouchEnum.SingleClickUp, typeof(SingleClickUp))]
         [TestCase(TouchEnum.DoubleClick, typeof(DoubleClick))]
@@ -22,7 +22,7 @@ namespace Tests.Factories
         public void GetCommand(TouchEnum type, Type objectType)
         {
             CommandFactory factory = new CommandFactory();
-            ICommand command = factory.GetCommand(type, null);
+            ICommand command = factory.GetCommand(type, null, null);
             Assert.That(command.GetType(), Is.EqualTo(objectType));
         }
 
@@ -30,7 +30,7 @@ namespace Tests.Factories
         public void GetCommand_Argument_Exception()
         {
             CommandFactory factory = new CommandFactory();
-            Assert.That(() => factory.GetCommand((TouchEnum)7, null), Throws.Exception.TypeOf<ArgumentException>().With.Message.EqualTo("Command not found"));
+            Assert.That(() => factory.GetCommand((TouchEnum)7, null, null), Throws.Exception.TypeOf<ArgumentException>().With.Message.EqualTo("Command not found"));
         }
     }
 }

@@ -11,10 +11,12 @@ namespace Shared.Commands
     public abstract class BaseCommand : ICommand
     {
         protected IMouseManager Manager;
+        protected readonly ICommandData Data;
 
-        protected BaseCommand(IMouseManager manager)
+        protected BaseCommand(IMouseManager manager, ICommandData data)
         {
             Manager = manager;
+            Data = data;
         }
 
         public abstract void Execute();
