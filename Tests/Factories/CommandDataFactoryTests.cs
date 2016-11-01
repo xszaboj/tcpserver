@@ -37,6 +37,13 @@ namespace Tests.Factories
             Assert.That(data.GetType(), Is.EqualTo(typeof(MoveData)));
         }
 
+        [Test]
+        public void GetData_fail()
+        {
+            var factory = new CommandDataFactory();
+            Assert.That(() => factory.GetData(GetReceivedData((TouchEnum)9)), Throws.Exception.TypeOf<ArgumentException>().With.Message.EqualTo("Command data type not found"));
+        }
+
         private ReceivedData GetReceivedData(TouchEnum type)
         {
             return new ReceivedData(1,5, type);
