@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Shared;
+using TCPServerApp.Properties;
 
 namespace TCPServerApp
 {
@@ -18,6 +19,10 @@ namespace TCPServerApp
         {
             InitializeComponent();
             _server = new TcpServer();
+            _server.Start();
+            this.statusValue.Text = Resources.Started;
+            this.Hide();
+            this.WindowState = FormWindowState.Minimized;
         }
 
         private void Form1_Resize(object sender, EventArgs e)
@@ -36,12 +41,20 @@ namespace TCPServerApp
         {
             //Start
             _server.Start();
+            this.statusValue.Text = Resources.Started;
         }
 
         private void stopToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //Stop
             _server.Stop();
+            this.statusValue.Text = Resources.Stoped;
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _server.Stop();
+            this.Close();
         }
     }
 }

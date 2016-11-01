@@ -79,7 +79,7 @@ namespace Shared
             ParsedData parsedData = ParsedData.ParseData(data);
             var originalX = _manager.GetX();
             var originalY = _manager.GetY();
-            return new ReceivedData(parsedData.X+originalX, parsedData.Y+originalY, parsedData.Action);
+            return new ReceivedData(parsedData.X, parsedData.Y, parsedData.Action);
         }
 
         private string[] ConvertBytesToString(INetworkStream networkStream)

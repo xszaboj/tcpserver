@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,6 +22,7 @@ namespace Shared.Commands
         public override void Execute()
         {
             Manager.Scroll(_data.ScrollValue);
+            Debug.WriteLine(_data.ScrollValue);
         }
     }
 }

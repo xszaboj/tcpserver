@@ -8,12 +8,12 @@ namespace Shared
 {
     public enum TouchEnum
     {
-        Move,
-        Scroll,
-        SingleClick,
-        SingleClickDown,
-        SingleClickUp,
-        RightClick,
-        DoubleClick
+        Move = 0,
+        Scroll = 1,
+        SingleClick = 2,
+        SingleClickDown = 5,
+        SingleClickUp = 6,
+        RightClick = 4,
+        DoubleClick = 3
     }
 }

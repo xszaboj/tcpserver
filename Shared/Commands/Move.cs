@@ -20,7 +20,7 @@ namespace Shared.Commands
 
         public override void Execute()
         {
-            Manager.MoveCursor(_data.MoveX, _data.MoveY);
+            Manager.MoveCursor(Manager.GetX()+ _data.MoveX, Manager.GetY() + _data.MoveY);
         }
     }
 }
