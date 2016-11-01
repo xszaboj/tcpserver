@@ -72,6 +72,15 @@ namespace Tests.Commands
             _mouseMock.Verify(a => a.Scroll(It.Is<int>(i => i == 5)), Times.Once);
         }
 
+        [Test]
+        public void MoveCommand()
+        {
+            _mouseMock.Setup(s => s.MoveCursor(It.IsAny<int>(), It.IsAny<int>())).Verifiable();
+            ICommand cmd = new Move(_mouseMock.Object, new MoveData(new ReceivedData(1,2,TouchEnum.Move)));
+            cmd.Execute();
+            _mouseMock.Verify(a => a.MoveCursor(It.IsAny<int>(), It.IsAny<int>()), Times.Once);
+        }
+
         private Empty GetEmpty()
         {
             return new Empty(new ReceivedData(0,0,TouchEnum.SingleClick));
