@@ -41,7 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ClientHandler.cs" />
+    <Compile Include="ClientHandle.cs" />
     <Compile Include="Commands\BaseCommand.cs" />
     <Compile Include="Commands\Data\BaseCommandData.cs" />
     <Compile Include="Commands\Data\Empty.cs" />
