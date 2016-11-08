@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
@@ -13,11 +14,12 @@ namespace Shared
     {
         private bool _running = true;
         TcpListener _serverSocket;
-        ITcpClient _clientSocket;
-        //TODO write as asynchronous
-        //https://msdn.microsoft.com/en-us/library/fx6588te(v=vs.110).aspx
+        private ClientHandler _handler;
+
+
         public async void Start()
         {
+            _handler = new ClientHandler();
             _serverSocket = new TcpListener(GetIP(), 8889);
             _serverSocket.Start();
             while (_running)
@@ -39,7 +41,7 @@ namespace Shared
                     string request = await reader.ReadLineAsync();
                     if (request != null)
                     {
-                        Debug.WriteLine(request);
+                        _handler.ExecuteCommand(request);
                     }
                     else
                         break; // client closede connection
@@ -56,8 +58,6 @@ namespace Shared
 
         public void Stop()
         {
-            //TODO fix exception
-            //http://stackoverflow.com/questions/7878019/how-do-i-stop-socketexception-a-blocking-operation-was-interrupted-by-a-call-t
             _running = false;
             _serverSocket.Stop();
         }
