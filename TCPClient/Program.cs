@@ -16,7 +16,7 @@ namespace TCPClient
         {
             
             Console.WriteLine("Connecting.....");
-            clientSocket.Connect("192.168.0.5", 8889);
+            clientSocket.Connect("192.168.7.192", 8889);
             Console.WriteLine("Connected");
             NetworkStream serverStream = clientSocket.GetStream();
             while (on)
@@ -37,14 +37,19 @@ namespace TCPClient
 
         private static void sendMessage(string str, NetworkStream serverStream)
         {
+            StreamWriter writer = new StreamWriter(serverStream);
+            writer.AutoFlush = true;
             if (str == "close")
             {
                 clientSocket.Close();
                 on = false;
             }
-            byte[] outStream = GoData();
-            serverStream.Write(outStream, 0, outStream.Length);
-            serverStream.Flush();
+            //byte[] outStream = GoData();
+            //serverStream.Write(outStream, 0, outStream.Length);
+            //serverStream.Flush();
+            writer.WriteLineAsync(str);
+
+
             /*byte[] inStream = new byte[10025];
             serverStream.Read(inStream, 0, (int)clientSocket.ReceiveBufferSize);
             string returndata = Encoding.ASCII.GetString(inStream);
