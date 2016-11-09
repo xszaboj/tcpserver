@@ -17,7 +17,7 @@ namespace Shared
         private ClientHandler _handler;
 
 
-        public async void Start()
+        public async Task Start()
         {
             _running = true;
             _handler = new ClientHandler();
