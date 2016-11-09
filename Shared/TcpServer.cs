@@ -24,9 +24,16 @@ namespace Shared
             _serverSocket.Start();
             while (_running)
             {
-                TcpClient tcpClient = await _serverSocket.AcceptTcpClientAsync();
-                Task t = Process(tcpClient);
-                await t;
+                try
+                {
+                    TcpClient tcpClient = await _serverSocket.AcceptTcpClientAsync();
+                    Task t = Process(tcpClient);
+                    await t;
+                }
+                catch (Exception)
+                {
+                    //Just suppress exception
+                }
             }
         }
 
