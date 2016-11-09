@@ -19,6 +19,7 @@ namespace Shared
 
         public async void Start()
         {
+            _running = true;
             _handler = new ClientHandler();
             _serverSocket = new TcpListener(GetIP(), 8889);
             _serverSocket.Start();
