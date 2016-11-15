@@ -23,18 +23,26 @@ namespace Shared
         public event ClientConnectedHandler ClientDisconnected;
         public delegate void ClientConnectedHandler(TcpServer s, ClientEventArg e);
 
-        public async void Start()
+        public async Task Start()
         {
+            _running = true;
             _handler = new ClientHandler();
             _serverSocket = new TcpListener(GetIP(), 8889);
             _serverSocket.Start();
             while (_running)
             {
-                TcpClient tcpClient = await _serverSocket.AcceptTcpClientAsync();
-                ClientEventArg clientData = new ClientEventArg() {Name = $"{_clientNumber++}"};
-                Task t = Process(tcpClient, clientData);
-                ClientConnected?.Invoke(this, clientData);
-                await t;
+                try
+                {
+                    TcpClient tcpClient = await _serverSocket.AcceptTcpClientAsync();
+                    ClientEventArg clientData = new ClientEventArg() {Name = $"{_clientNumber++}"};
+                    Task t = Process(tcpClient, clientData);
+                    ClientConnected?.Invoke(this, clientData);
+                    await t;
+                }
+                catch (Exception)
+                {
+                    //Just suppress exception
+                }
             }
         }
 
