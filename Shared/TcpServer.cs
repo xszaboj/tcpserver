@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
+using Shared.Events;
 using Shared.TCPWrappers;
 
 namespace Shared
@@ -13,9 +14,14 @@ namespace Shared
     public class TcpServer
     {
         private bool _running = true;
+        private int _clientNumber = 1;
+
         TcpListener _serverSocket;
         private ClientHandler _handler;
 
+        public event ClientConnectedHandler ClientConnected;
+        public event ClientConnectedHandler ClientDisconnected;
+        public delegate void ClientConnectedHandler(TcpServer s, ClientEventArg e);
 
         public async void Start()
         {
@@ -25,12 +31,14 @@ namespace Shared
             while (_running)
             {
                 TcpClient tcpClient = await _serverSocket.AcceptTcpClientAsync();
-                Task t = Process(tcpClient);
+                ClientEventArg clientData = new ClientEventArg() {Name = $"{_clientNumber++}"};
+                Task t = Process(tcpClient, clientData);
+                ClientConnected?.Invoke(this, clientData);
                 await t;
             }
         }
 
-        private async Task Process(TcpClient tcpClient)
+        private async Task Process(TcpClient tcpClient, ClientEventArg clientData)
         {
             try
             {
@@ -47,12 +55,16 @@ namespace Shared
                         break; // client closede connection
                 }
                 tcpClient.Close();
+                ClientDisconnected?.Invoke(this, clientData);
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
                 if (tcpClient.Connected)
+                {
                     tcpClient.Close();
+                    ClientDisconnected?.Invoke(this, clientData);
+                }
             }
         }
 

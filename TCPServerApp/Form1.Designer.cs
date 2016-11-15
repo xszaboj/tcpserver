@@ -37,6 +37,8 @@
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusLbl = new System.Windows.Forms.Label();
             this.statusValue = new System.Windows.Forms.Label();
+            this.dataLog = new System.Windows.Forms.RichTextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -95,11 +97,31 @@
             this.statusValue.Size = new System.Drawing.Size(0, 13);
             this.statusValue.TabIndex = 2;
             // 
+            // dataLog
+            // 
+            this.dataLog.Location = new System.Drawing.Point(12, 71);
+            this.dataLog.Name = "dataLog";
+            this.dataLog.ReadOnly = true;
+            this.dataLog.Size = new System.Drawing.Size(260, 178);
+            this.dataLog.TabIndex = 3;
+            this.dataLog.Text = "";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(12, 55);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(25, 13);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "Log";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 261);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.dataLog);
             this.Controls.Add(this.statusValue);
             this.Controls.Add(this.statusLbl);
             this.Name = "Form1";
@@ -120,6 +142,8 @@
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.Label statusLbl;
         private System.Windows.Forms.Label statusValue;
+        private System.Windows.Forms.RichTextBox dataLog;
+        private System.Windows.Forms.Label label1;
     }
 }
 
