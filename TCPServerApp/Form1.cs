@@ -35,12 +35,12 @@ namespace TCPServerApp
 
         private void ServerOnClientDisconnected(TcpServer tcpServer, ClientEventArg clientData)
         {
-            dataLog.AppendText(AddLine($"Client number {clientData.Name} just disconnected."));
+            dataLog.AppendText(AddLine($"Client number {clientData.Number} just disconnected."));
         }
 
         private void ServerOnClientConnected(TcpServer tcpServer, ClientEventArg clientData)
         {
-            dataLog.AppendText(AddLine($"Client number {clientData.Name} just connected."));
+            dataLog.AppendText(AddLine($"Client number {clientData.Number} just connected. With remote address: {clientData.RemoteAddress}"));
         }
 
         private string AddLine(string message)

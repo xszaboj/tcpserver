@@ -12,11 +12,11 @@ namespace TCPServer
             server.Start();
             server.ClientConnected += (tcpServer, arg) =>
             {
-                Console.WriteLine("Client number {0} just connected.", arg.Name);
+                Console.WriteLine("Client number {0} just connected.", arg.Number);
             };
             server.ClientDisconnected += (tcpServer, arg) =>
             {
-                Console.WriteLine("Client number {0} just disconnected.", arg.Name);
+                Console.WriteLine("Client number {0} just disconnected.", arg.Number);
             };
             Console.ReadLine();
         }

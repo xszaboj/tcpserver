@@ -34,13 +34,21 @@ namespace Shared
                 try
                 {
                     TcpClient tcpClient = await _serverSocket.AcceptTcpClientAsync();
-                    ClientEventArg clientData = new ClientEventArg() {Name = $"{_clientNumber++}"};
+                    ClientEventArg clientData = new ClientEventArg()
+                    {
+                        Number = $"{_clientNumber++}",
+                        RemoteAddress = tcpClient.Client.RemoteEndPoint.ToString()
+                    };
                     Task t = Process(tcpClient, clientData);
                     ClientConnected?.Invoke(this, clientData);
                     await t;
                 }
                 catch (Exception)
                 {
+                    if (_running)
+                    {
+                        throw;
+                    }
                     //Just suppress exception
                 }
             }
